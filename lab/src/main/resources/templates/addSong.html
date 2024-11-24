@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="(${addSong} ? 'Add song' : 'Update song')">Title</title>
+</head>
+<style>
+    .input-container {
+        display: flex;
+        justify-content: space-between;
+    }
+    .container {
+        display: grid;
+        grid-template: "a b";
+        grid-gap: 15px;
+        width: 80%;
+    }
+    .form-container {
+        display: flex;
+        justify-content: center;
+    }
+
+</style>
+<body>
+
+<div>
+    <h1 th:text="(${addSong} ? 'Add a new song' : 'Update song')"></h1>
+</div>
+<div class="form-container">
+    <form th:action="(${addSong} ?  '/songs/add' : '/songs/edit/'+${song.getTrackId()})" method="POST">
+        <div class="container">
+            <div class="input-container">
+                <label>Title: </label>
+                <input name="title" type="text" th:value="(${addSong} ? '' : ${song.getTitle()})">
+            </div>
+            <div class="input-container">
+                <label>Genre: </label>
+                <input name="genre" type="text" th:value="(${addSong} ? '' : ${song.getGenre()})">
+            </div>
+            <div class="input-container">
+                <label>Release Year: </label>
+                <input name="releaseYear" type="number" th:value="(${addSong} ? '' : ${song.getReleaseYear()})">
+            </div>
+            <div class="input-container">
+                <label>Album:</label>
+                <select name="albumId">
+                    <option th:each="album : ${albums}" th:text="${album.getName()}" th:value="${album.getId()}"></option>
+                </select>
+            </div>
+        </div>
+        <input type="submit" th:value="(${addSong} ? 'Add song' : 'Edit song')">
+
+    </form>
+
+</div>
+
+</body>
+</html>

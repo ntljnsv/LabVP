@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Songs</title>
+    <style>
+        .table, td, th{
+            border: gray solid 1px;
+            border-collapse: collapse;
+            padding: 5px;
+        }
+        .table {
+            width: 80%;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+        }
+        .button-container {
+            display: flex;
+            justify-content: space-around;
+        }
+    </style>
+</head>
+<body>
+    <h1>All songs</h1>
+    <div th:text="(${hasError} ? ${error} : '')"></div>
+    <form action="/songs/add-form" th:method="GET">
+        <input type="submit" value="Add new song">
+    </form>
+    <div class="container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Genre</th>
+                    <th>Release Year</th>
+                    <th>Artists</th>
+                    <th>Album</th>
+                    <th>Add artist</th>
+                    <th>Edit Song</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="song : ${songs}">
+                    <td>
+                        <a th:href="@{'/songs/details/'+${song.getTrackId()}}" th:text="${song.getTitle()}"></a>
+                    </td>
+                    <td th:text="${song.getGenre()}"></td>
+                    <td th:text="${song.getReleaseYear()}"></td>
+                    <td>
+                        <ul th:each="artist : ${song.getPerformers()}">
+                            <li th:text="${artist.getFirstName()}+' '+${artist.getLastName()}"></li>
+                        </ul>
+                    </td>
+                    <td th:text="${song.getAlbum().getName()}"></td>
+                    <td>
+                        <div class="button-container">
+                            <form action="/artists/list-artists" method="GET">
+                                <input hidden="hidden" th:value="${song.getTrackId()}" name="trackId">
+                                <input type="submit" value="Add artist to song">
+                            </form>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="button-container">
+                            <form th:action="'/songs/edit-form/' + ${song.getTrackId()}" method="GET">
+                                <input type="submit" value="Edit song">
+                            </form>
+                            <form th:action="'/songs/delete/' + ${song.getTrackId()}" method="GET">
+                                <input type="submit" value="Delete song">
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
