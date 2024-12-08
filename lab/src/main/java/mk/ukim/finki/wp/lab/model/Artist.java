@@ -1,19 +1,26 @@
 package mk.ukim.finki.wp.lab.model;
 
+import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.util.Random;
+import java.util.List;
 
 @Data
+@NoArgsConstructor
+@Entity
+@Table(name = "artists")
 public class Artist {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String firstName;
     private String lastName;
     private String bio;
+    @ManyToMany
+    private List<Song> songs;
 
     public Artist(String firstName, String lastName, String bio) {
-        Random random = new Random();
-        this.id = random.nextLong(1000, 9999);
         this.firstName = firstName;
         this.lastName = lastName;
         this.bio = bio;

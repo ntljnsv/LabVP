@@ -1,6 +1,5 @@
 package mk.ukim.finki.wp.lab.web.controller;
 
-import jakarta.websocket.server.PathParam;
 import mk.ukim.finki.wp.lab.model.exceptions.SongNotFoundException;
 import mk.ukim.finki.wp.lab.service.AlbumService;
 import mk.ukim.finki.wp.lab.service.SongService;
