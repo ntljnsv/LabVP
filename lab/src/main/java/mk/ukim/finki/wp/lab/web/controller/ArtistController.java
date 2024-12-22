@@ -2,6 +2,7 @@ package mk.ukim.finki.wp.lab.web.controller;
 
 import mk.ukim.finki.wp.lab.service.ArtistService;
 import mk.ukim.finki.wp.lab.service.SongService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +26,7 @@ public class ArtistController {
     }
 
     @PostMapping("/add-to-song")
+    @PreAuthorize("hasRole('ADMIN')")
     public String addToSong(@RequestParam Long artistId, Long trackId) {
         songService.addArtistToSong(artistId, trackId);
         return "redirect:/songs";

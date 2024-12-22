@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Songs</title>
@@ -25,7 +25,10 @@
 <body>
     <h1>All songs</h1>
     <div th:text="(${hasError} ? ${error} : '')"></div>
-    <form action="/songs/add-form" th:method="GET">
+    <form th:action="@{/logout}" method="post">
+        <button type="submit">Logout</button>
+    </form>
+    <form action="/songs/add-form" th:method="GET" sec:authorize="hasRole('ADMIN')">
         <input type="submit" value="Add new song">
     </form>
     <div class="container">
@@ -37,8 +40,8 @@
                     <th>Release Year</th>
                     <th>Artists</th>
                     <th>Album</th>
-                    <th>Add artist</th>
-                    <th>Edit Song</th>
+                    <th sec:authorize="hasRole('ADMIN')">Add artist</th>
+                    <th sec:authorize="hasRole('ADMIN')">Edit Song</th>
                 </tr>
             </thead>
             <tbody>
@@ -56,7 +59,7 @@
                     <td>
                         <a th:href="@{'/albums/details/'+${song.getAlbum().getId()}}" th:text="${song.getAlbum().getName()}"></a>
                     </td>
-                    <td>
+                    <td sec:authorize="hasRole('ADMIN')">
                         <div class="button-container">
                             <form action="/artists/list-artists" method="GET">
                                 <input hidden="hidden" th:value="${song.getTrackId()}" name="trackId">
@@ -64,7 +67,7 @@
                             </form>
                         </div>
                     </td>
-                    <td>
+                    <td sec:authorize="hasRole('ADMIN')">
                         <div class="button-container">
                             <form th:action="'/songs/edit-form/' + ${song.getTrackId()}" method="GET">
                                 <input type="submit" value="Edit song">

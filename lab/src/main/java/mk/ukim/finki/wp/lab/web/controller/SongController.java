@@ -3,6 +3,7 @@ package mk.ukim.finki.wp.lab.web.controller;
 import mk.ukim.finki.wp.lab.model.exceptions.SongNotFoundException;
 import mk.ukim.finki.wp.lab.service.AlbumService;
 import mk.ukim.finki.wp.lab.service.SongService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -36,7 +37,9 @@ public class SongController {
         return "listSongs";
     }
 
+
     @PostMapping("/add")
+    @PreAuthorize("hasRole('ADMIN')")
     public String saveSong(@RequestParam String title,
                            @RequestParam String genre,
                            @RequestParam int releaseYear,
@@ -46,6 +49,7 @@ public class SongController {
     }
 
     @PostMapping("/edit/{trackId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public String editSong(@PathVariable Long trackId,
                            @RequestParam String title,
                            @RequestParam String genre,
@@ -56,12 +60,14 @@ public class SongController {
     }
 
     @GetMapping("/delete/{trackId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public String deleteSong(@PathVariable Long trackId) {
         songService.deleteSong(trackId);
         return "redirect:/songs";
     }
 
     @GetMapping("/edit-form/{trackId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public String getEditSongForm(@PathVariable Long trackId, Model model) {
         try {
             Song song = songService.findByTrackId(trackId);
@@ -77,6 +83,7 @@ public class SongController {
     }
 
     @GetMapping("/add-form")
+    @PreAuthorize("hasRole('ADMIN')")
     public String getAddSongPage(Model model) {
         model.addAttribute("addSong", true);
         model.addAttribute("albums", albumService.findAll());

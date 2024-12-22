@@ -1,4 +1,4 @@
-<html>
+<html xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
     <title>Add new Performer to Song</title>
@@ -32,7 +32,7 @@
 </header>
 <section>
     <h2>Select artist:</h2>
-    <form action="/artists/add-to-song" method="POST">
+    <form action="/artists/add-to-song" method="POST" sec:authorize="hasRole('ADMIN')">
         <input hidden="hidden" name="trackId" th:value="${trackId}">
         <div>
             <input type="radio" th:each="artist : ${artists}" name="artistId" th:value="${artist.getId()}" th:text="${artist.getFirstName()}+' '+${artist.getLastName()}">
